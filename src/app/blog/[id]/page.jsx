@@ -1,38 +1,43 @@
+"use client"
 import React from 'react'
 import Image from 'next/image'
 import styles from './page.module.css'
 import { notFound } from 'next/navigation'
+import useSWR from 'swr'
 
-async function getData(id){
-  const res = await fetch(`https://kdgallery.vercel.app/api/posts/${id}`, { cache: "no-store" })
+// async function getData(id){
+//   const res = await fetch(`https://kdgallery.vercel.app/api/posts/${id}`, { cache: "no-store" })
 
-  if(!res.ok){
-    return notFound()
-  }
+//   if(!res.ok){
+//     return notFound()
+//   }
 
-  return res.json()
-}
+//   return res.json()
+// }
 
-export async function generateMetadata({params}){
-  const data  = await getData(params.id)
-  return{
-    title: data.title,
-    description: data.description
-  }
-}
+// export async function generateMetadata({params}){
+//   const data  = await getData(params.id)
+//   return{
+//     title: data.title,
+//     description: data.description
+//   }
+// }
 
 
 
-const BlogPosts = async({params}) => {
-  const data = await getData(params.id)
+const BlogPosts = ({params}) => {
+  const fetcher = (...args) => fetch(...args).then(res => res.json())
+
+  const { data, error,mutate, isLoading } = useSWR(`/api/posts/${params.id}`, fetcher)
+  console.log(data);
   return (
     <div>
       <div className={styles.top}>
         <div className={styles.info}>
           <h1 className={styles.title} >
-            {data.title}
+            {data?.title}
           </h1>
-          <p className={styles.desc}>{data.desc}</p>
+          <p className={styles.desc}>{data?.desc}</p>
           <div className={styles.poster}>
             <Image
               src="https://images.pexels.com/photos/1615776/pexels-photo-1615776.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -41,12 +46,12 @@ const BlogPosts = async({params}) => {
               height={40}
               className={styles.profilePic}
             />
-            <span className={styles.username}>{data.username}</span>
+            <span className={styles.username}>{data?.username}</span>
           </div>
         </div>
         <div className={styles.imgContainer}>
           <Image
-            src={data.image}
+            src={data?.image}
             alt=""
             fill={true}
             className={styles.img}
@@ -55,7 +60,7 @@ const BlogPosts = async({params}) => {
       </div>
       <div className={styles.content}>
         <p className={styles.text}>
-          {data.content}
+          {data?.content}
         </p>
       </div>
     </div>
