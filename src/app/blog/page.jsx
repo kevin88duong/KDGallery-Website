@@ -1,24 +1,23 @@
+"use client"
 import React from 'react'
 import styles from "./page.module.css"
 import Link from 'next/link'
 import Image from 'next/image'
+import useSWR from 'swr'
 
-async function getData(){
-  const res = await fetch("https://kdgallery.vercel.app/api/posts", { next: { revalidate: 20 } })
 
-  if(!res.ok){
-    throw new Error("Failed")
-  }
 
-  return res.json()
-}
 
-const Blog = async() => {
-  const data = await getData()
+
+const Blog = () => {
+  const fetcher = (...args) => fetch(...args).then(res => res.json())
+
+  const { data, error,mutate, isLoading } = useSWR("/api/posts", fetcher)
+  console.log(data);
   return (
     
     <div className={styles.mContainer}>
-      {data.map(item=>(
+      {isLoading ? "Loading" : data?.map(item=>(
       <Link href={`/blog/${item._id}`} className={styles.container} key={item.id}>
         <div className={styles.imgContainer} >
           <Image
