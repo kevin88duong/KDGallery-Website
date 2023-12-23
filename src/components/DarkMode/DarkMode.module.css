@@ -1,0 +1,25 @@
+.container{
+    width: 42px;
+    height: 24px;
+    border: 1.5px solid darkred;
+    border-radius: 30px;
+    justify-content: space-between;
+    display: flex;
+    position: relative;
+    padding: 2px;
+    align-items: center;
+    cursor: pointer;
+    
+}
+
+.icon{
+    font-size: 12px;
+}
+
+.toggle{
+    width: 15px;
+    height: 15px;
+    background-color: darkred;
+    border-radius: 50%;
+    position: absolute;
+}
