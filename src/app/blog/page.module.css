@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    gap: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.img{
+    object-fit: cover;
+}
+
+.title{
+    margin-bottom: 10px;
+}
+.desc{
+    font-size: 18px;
+    
+}
